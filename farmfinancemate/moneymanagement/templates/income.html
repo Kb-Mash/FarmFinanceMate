@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Farm Income - FarmFinanceMate{% endblock %}
+
+{% block content %}
+<h1>Add Farm Income</h1>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="income_type" class="form-label">Income Type:</label>
+        <input type="text" class="form-control" id="income_type" name="income_type" required>
+    </div>
+    <div class="mb-3">
+        <label for="amount" class="form-label">Amount:</label>
+        <input type="number" class="form-control" id="amount" name="amount" min="0" step="0.01" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Income</button>
+</form>
+
+<hr>
+
+<h1>Farm Income</h1>
+<form method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" class="form-control" name="search" placeholder="Search...">
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Income Type</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in income %}
+        <tr>
+            <td>{{ item.income_type }}</td>
+            <td>{{ item.amount }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p>Total Sum: {{ total_sum }}</p>
+
+{% if messages %}
+<ul class="list-group">
+    {% for message in messages %}
+    <li class="list-group-item">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
