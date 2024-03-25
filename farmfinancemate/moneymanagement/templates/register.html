@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+
+{% for message in messages %}
+    <div class="alert {% if message.tags == 'info' %}alert-danger{% elif message.tags == 'success' %}alert-success{% endif %}" role="alert">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<form method="POST" action="{% url 'register' %}">
+    {% csrf_token %}
+    <h1 align="center">Sign Up</h1>
+    <div class="mb-3">
+        <label for="firstname" class="form-label">First name</label>
+        <input type="text" class="form-control" id="firstname" name="firstname" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="lastname" class="form-label">Last name</label>
+        <input type="text" class="form-control" id="lastname" name="lastname" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Farm Name</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="password1" class="form-label">Enter Password</label>
+        <input type="password" class="form-control" id="password1" name="password1" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="password2" class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="password2" name="password2" required>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+    <br>
+    <p>Already have an account?<a href="/login"> Login here</a></p>
+</form>
+{% endblock %}
