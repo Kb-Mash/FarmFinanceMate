@@ -29,15 +29,25 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Date</th>
             <th>Expense Type</th>
             <th>Amount</th>
+            <th>Actions</th> <!-- New column for actions -->
         </tr>
     </thead>
     <tbody>
         {% for expense in expenses %}
         <tr>
+            <td>{{ expense.date }}</td>
             <td>{{ expense.expense_type }}</td>
             <td>{{ expense.amount }}</td>
+            <td>
+                <a href="{% url 'edit_expense' expense.id %}" class="btn btn-primary btn-sm">Edit</a>
+                <form method="post" action="{% url 'delete_expense' expense.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
