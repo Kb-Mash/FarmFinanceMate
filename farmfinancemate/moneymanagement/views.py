@@ -286,3 +286,10 @@ def delete_income(request, income_id):
 
     context = {'income': income}
     return render(request, 'delete_expense.html', context)
+
+@login_required(login_url='/login/')
+def home(request):
+    """
+    View function for the home page.
+    """
+    return render(request, 'home.html')
