@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, auth
 from django.db.models import Sum
 from .models import FarmExpense, FarmIncome
 
@@ -76,11 +76,11 @@ def login_page(request):
         username = request.POST['username']
         password = request.POST['password']
         try:
-            user = authenticate(username=username, password=password)
+            user = auth.authenticate(username=username, password=password)
             if user is not None:
-                login(request, user)
+                auth.login(request, user)
                 messages.success(request, 'Logged in successfully')
-                return redirect('/')
+                return redirect('home')
             else:
                 messages.info(request, 'Invalid credentials')
                 return redirect('login')
@@ -101,7 +101,7 @@ def logout_page(request):
     Returns:
         redirect: redirects to home page
     """
-    logout(request)
+    auth.logout(request)
     messages.success(request, 'Logged out successfully')
     return redirect('/')
 
@@ -195,7 +195,7 @@ def farm_income(request):
     # Calculating total sum of income
     total_sum = queryset.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
-    context = {'income': queryset, 'total_sum': total_sum}
+    context = {'incomes': queryset, 'total_sum': total_sum}
 
     return render(request, 'income.html', context)
 
