@@ -2,6 +2,14 @@
 
 {% block title %}Farm Income - FarmFinanceMate{% endblock %}
 
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
 {% block content %}
 <h1>Add Farm Income</h1>
 <form method="post">
@@ -40,13 +48,10 @@
         <tr>
             <td>{{ income.date }}</td>
             <td>{{ income.income_type }}</td>
-            <td>{{ income.amount }}</td>
+            <td>R {{ income.amount }}</td>
             <td>
-                <a href="{% url 'update_income' income.id %}" class="btn btn-primary btn-sm">Edit</a>
-                <form method="post" action="{% url 'delete_income' income.id %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
+                <a href="/edit_income/{{ income.id }}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="/delete_income/{{ income.id }}" class="btn btn-primary btn-sm">Delete</a>
             </td>
         </tr>
         {% endfor %}
@@ -54,12 +59,4 @@
 </table>
 
 <p>Total Sum: {{ total_sum }}</p>
-
-{% if messages %}
-<ul class="list-group">
-    {% for message in messages %}
-    <li class="list-group-item">{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
 {% endblock %}

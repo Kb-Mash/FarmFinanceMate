@@ -8,7 +8,7 @@
     {% csrf_token %}
     <div class="mb-3">
         <label for="income_type" class="form-label">Income Type:</label>
-        <input type="text" class="form-control" id="income_type" name="income_type" value="{{ income.income }}" required>
+        <input type="text" class="form-control" id="income_type" name="income_type" value="{{ income.income_type }}" required>
     </div>
     <div class="mb-3">
         <label for="amount" class="form-label">Amount:</label>
