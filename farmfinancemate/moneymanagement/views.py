@@ -7,12 +7,14 @@ from .models import FarmExpense, FarmIncome
 
 # Create your views here.
 
-# base page for the app
+
 def base(request):
+    """ view function for the base template """
     return render(request, 'base.html')
 
-# register page for user registration
+
 def register_page(request):
+    """ view function for user registration """
     if request.method == 'POST':
         firstName = request.POST.get('firstname')
         lastName = request.POST.get('lastname')
@@ -39,8 +41,9 @@ def register_page(request):
 
     return render(request, 'register.html')
 
-# login page for user login
+
 def login_page(request):
+    """ view function for user login """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -55,20 +58,23 @@ def login_page(request):
             return redirect('login')
     return render(request, 'login.html')
 
-# logout view
+
 @login_required
 def logout_page(request):
+    """ view function that logs out user """
     auth.logout(request)
     return redirect('/')
 
 # home page
 @login_required
 def home(request):
+    """ view function for the home page """
     return render(request, 'home.html')
 
-# farm expense page for adding and viewing farm expenses
+
 @login_required
 def farm_expense(request):
+    """ view function for adding and viewing farm expenses """
     if request.method == 'POST':
         expense_type = request.POST.get('expense_type')
         amount = request.POST.get('amount')
@@ -88,9 +94,10 @@ def farm_expense(request):
     context = {'expenses': queryset, 'total_sum': total_sum}
     return render(request, 'farm_expense.html', context)
 
-# farm income page for adding and viewing farm income
+
 @login_required
 def farm_income(request):
+    """ view function for adding and viewing farm income """
     if request.method == 'POST':
         income_type = request.POST.get('income_type')
         amount = request.POST.get('amount')
@@ -111,9 +118,9 @@ def farm_income(request):
     return render(request, 'farm_income.html', context)
 
 
-# update the Expense data
 @login_required
 def update_expense(request, id):
+    """ view function for updating a farm expense """
     expense = FarmExpense.objects.get(id=id)
 
     if request.method == 'POST':
@@ -133,9 +140,10 @@ def update_expense(request, id):
     context = {'expense': expense}
     return render(request, 'update_expense.html', context)
 
-# update the Income data
+
 @login_required
 def update_income(request, id):
+    """ view function for updating a farm income """
     income = FarmIncome.objects.get(id=id)
 
     if request.method == 'POST':
@@ -155,17 +163,19 @@ def update_income(request, id):
     context = {'income': income}
     return render(request, 'update_income.html', context)
 
-# delete the Expense data
+
 @login_required
 def delete_expense(request, id):
+    """ view function for deleting a farm expense """
     queryset = FarmExpense.objects.get(id=id)
     queryset.delete()
     messages.success(request, 'Expense deleted successfully.')
     return redirect('farm_expense')
 
-# delete the Income data
+
 @login_required
 def delete_income(request, id):
+    """ view function for deleting a farm income """
     queryset = FarmIncome.objects.get(id=id)
     queryset.delete()
     messages.success(request, 'Income deleted successfully.')
