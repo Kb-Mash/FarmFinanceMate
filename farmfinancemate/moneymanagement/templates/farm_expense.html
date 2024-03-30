@@ -2,6 +2,14 @@
 
 {% block title %}Farm Expenses - FarmFinanceMate{% endblock %}
 
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
 {% block content %}
 <h1>Add Farm Expense</h1>
 <form method="post">
@@ -19,20 +27,15 @@
 
 <hr>
 
+{% if expenses %}
 <h1>Farm Expenses</h1>
-<form method="get" class="mb-3">
-    <div class="input-group">
-        <input type="text" class="form-control" name="search" placeholder="Search...">
-        <button type="submit" class="btn btn-outline-secondary">Search</button>
-    </div>
-</form>
 <table class="table">
     <thead>
         <tr>
             <th>Date</th>
             <th>Expense Type</th>
             <th>Amount</th>
-            <th>Actions</th> <!-- New column for actions -->
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -42,11 +45,8 @@
             <td>{{ expense.expense_type }}</td>
             <td>{{ expense.amount }}</td>
             <td>
-                <a href="{% url 'edit_expense' expense.id %}" class="btn btn-primary btn-sm">Edit</a>
-                <form method="post" action="{% url 'delete_expense' expense.id %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
+                <a href="/update_expense/{{ expense.id }}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="/delete_expense/{{ expense.id }}" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         {% endfor %}
@@ -54,4 +54,5 @@
 </table>
 
 <p>Total Sum: {{ total_sum }}</p>
+{% endif %}
 {% endblock %}

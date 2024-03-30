@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login: FarmFinanceMate{% endblock %}
 
 {% block content %}
 
+{% if messages %}
 {% for message in messages %}
-    <div class="alert {% if message.tags == 'info' %}alert-danger{% elif message.tags == 'success' %}alert-success{% endif %}" role="alert">
+    <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% endif %}" role="alert">
         {{ message }}
     </div>
 {% endfor %}
+{% endif %}
 
 
 <form method="POST" action="{% url 'login' %}">

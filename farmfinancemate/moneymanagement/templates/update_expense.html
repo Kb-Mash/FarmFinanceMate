@@ -2,6 +2,14 @@
 
 {% block title %}Update Expense - FarmFinanceMate{% endblock %}
 
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+
 {% block content %}
 <h1>Update Farm Expense</h1>
 <form method="post">

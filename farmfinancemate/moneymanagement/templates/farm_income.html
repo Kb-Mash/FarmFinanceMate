@@ -27,13 +27,8 @@
 
 <hr>
 
+{% if items %}
 <h1>Farm Income</h1>
-<form method="get" class="mb-3">
-    <div class="input-group">
-        <input type="text" class="form-control" name="search" placeholder="Search...">
-        <button type="submit" class="btn btn-outline-secondary">Search</button>
-    </div>
-</form>
 <table class="table">
     <thead>
         <tr>
@@ -44,14 +39,14 @@
         </tr>
     </thead>
     <tbody>
-        {% for income in incomes %}
+        {% for income in items %}
         <tr>
             <td>{{ income.date }}</td>
             <td>{{ income.income_type }}</td>
             <td>R {{ income.amount }}</td>
             <td>
-                <a href="/edit_income/{{ income.id }}" class="btn btn-primary btn-sm">Edit</a>
-                <a href="/delete_income/{{ income.id }}" class="btn btn-primary btn-sm">Delete</a>
+                <a href="/update_income/{{ income.id }}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="/delete_income/{{ income.id }}" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         {% endfor %}
@@ -59,4 +54,5 @@
 </table>
 
 <p>Total Sum: {{ total_sum }}</p>
+{% endif %}
 {% endblock %}
