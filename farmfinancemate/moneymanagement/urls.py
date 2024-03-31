@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+# URL patterns for the moneymanagement app
+
 urlpatterns = [
     path('', views.base, name='base'),
     path('register', views.register_page, name='register'),
