@@ -9,12 +9,28 @@ from .models import FarmExpense, FarmIncome
 
 
 def base(request):
-    """ view function for the base template """
+    """
+    View function for the base template
+
+    Args:
+        request: HttpRequest object
+
+    Retuns:
+        HttpResponse object
+    """
     return render(request, 'base.html')
 
 
 def register_page(request):
-    """ view function for user registration """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     if request.method == 'POST':
         firstName = request.POST.get('firstname')
         lastName = request.POST.get('lastname')
@@ -43,7 +59,15 @@ def register_page(request):
 
 
 def login_page(request):
-    """ view function for user login """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -61,20 +85,44 @@ def login_page(request):
 
 @login_required
 def logout_page(request):
-    """ view function that logs out user """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     auth.logout(request)
     return redirect('/')
 
 # home page
 @login_required
 def home(request):
-    """ view function for the home page """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     return render(request, 'home.html')
 
 
 @login_required
 def farm_expense(request):
-    """ view function for adding and viewing farm expenses """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     if request.method == 'POST':
         expense_type = request.POST.get('expense_type')
         amount = request.POST.get('amount')
@@ -97,7 +145,15 @@ def farm_expense(request):
 
 @login_required
 def farm_income(request):
-    """ view function for adding and viewing farm income """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     if request.method == 'POST':
         income_type = request.POST.get('income_type')
         amount = request.POST.get('amount')
@@ -120,7 +176,15 @@ def farm_income(request):
 
 @login_required
 def update_expense(request, id):
-    """ view function for updating a farm expense """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     expense = FarmExpense.objects.get(id=id)
 
     if request.method == 'POST':
@@ -143,7 +207,15 @@ def update_expense(request, id):
 
 @login_required
 def update_income(request, id):
-    """ view function for updating a farm income """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     income = FarmIncome.objects.get(id=id)
 
     if request.method == 'POST':
@@ -166,7 +238,15 @@ def update_income(request, id):
 
 @login_required
 def delete_expense(request, id):
-    """ view function for deleting a farm expense """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     queryset = FarmExpense.objects.get(id=id)
     queryset.delete()
     messages.success(request, 'Expense deleted successfully.')
@@ -175,7 +255,15 @@ def delete_expense(request, id):
 
 @login_required
 def delete_income(request, id):
-    """ view function for deleting a farm income """
+    """
+    View function for user registration
+
+    Args:
+        request: HttpRequest object
+
+    Returns:
+        HttpResponse object or redirect object
+    """
     queryset = FarmIncome.objects.get(id=id)
     queryset.delete()
     messages.success(request, 'Income deleted successfully.')
