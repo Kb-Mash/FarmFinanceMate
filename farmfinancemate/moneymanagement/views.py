@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from django.db.models import Sum
-from .models import FarmExpense, FarmIncome
+from .models import FarmExpense, FarmIncome, ExpenseCategory, IncomeCategory
 
 # Create your views here.
 
@@ -111,6 +111,33 @@ def home(request):
     """
     return render(request, 'home.html')
 
+
+@login_required
+def expense_category(request):
+    if request.method == 'POST':
+        category = request.POST.get('expense_category')
+
+        new_category = ExpenseCategory.objects.create(category=category)
+        new_category.save()
+        return redirect('expense_category')
+
+    queryset = ExpenseCategory.objects.all()
+    context = {'categories': queryset}
+    return render(request, 'expense_category.html', context)
+
+
+@login_required
+def income_category(request):
+    if request.method == 'POST':
+        category = request.POST.get('income_category')
+
+        new_category = IncomeCategory.objects.create(category=category)
+        new_category.save()
+        return redirect('income_category')
+
+    queryset = IncomeCategory.objects.all()
+    context = {'categories': queryset}
+    return render(request, 'income_category.html', context)
 
 @login_required
 def farm_expense(request):
