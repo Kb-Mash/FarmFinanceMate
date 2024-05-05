@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from django.db.models import Sum
 from .models import FarmExpense, FarmIncome, ExpenseCategory, IncomeCategory
+from datetime import datetime
 
 # Create your views here.
 
@@ -114,33 +115,27 @@ def home(request):
 
 @login_required
 def expense_category(request):
-    if request.method == 'POST':
-        category = request.POST.get('expense_category')
+    if not ExpenseCategory.objects.exists():
+        ExpenseCategory.create_predefined_categories()
 
-        new_category = ExpenseCategory.objects.create(category=category)
-        new_category.save()
-        return redirect('expense_category')
-
-    queryset = ExpenseCategory.objects.all()
+    queryset = ExpenseCategory.objects.all() #.order_by('category')
     context = {'categories': queryset}
+    
     return render(request, 'expense_category.html', context)
 
 
 @login_required
 def income_category(request):
-    if request.method == 'POST':
-        category = request.POST.get('income_category')
+    if not IncomeCategory.objects.exists():
+        IncomeCategory.create_predefined_categories()
 
-        new_category = IncomeCategory.objects.create(category=category)
-        new_category.save()
-        return redirect('income_category')
-
-    queryset = IncomeCategory.objects.all()
+    queryset = IncomeCategory.objects.all() #.order_by('category')
     context = {'categories': queryset}
+    
     return render(request, 'income_category.html', context)
 
 @login_required
-def farm_expense(request):
+def farm_expense(request, id):
     """
     View function for user registration
 
@@ -150,28 +145,31 @@ def farm_expense(request):
     Returns:
         HttpResponse object or redirect object
     """
-    if request.method == 'POST':
-        expense_type = request.POST.get('expense_type')
-        amount = request.POST.get('amount')
+    category = ExpenseCategory.objects.get(id=id)
 
-        if expense_type and amount:
-            expense = FarmExpense.objects.create(user=request.user, expense_type=expense_type, amount=amount)
+    if request.method == 'POST':
+        expense = request.POST.get('expense')
+        amount = request.POST.get('amount')
+        user_date = request.POST.get('user_date')
+
+        if expense and amount and user_date:
+            expense = FarmExpense.objects.create(user=request.user, category=category, expense=expense, amount=amount, user_date=user_date)
             messages.success(request, 'Farm expense added successfully')
-            return redirect('farm_expense')
+            return redirect('farm_expense', id=id)
         else:
             messages.error(request, 'Fill in the information')
-            return redirect('farm_expense')
+            return redirect('farm_expense', id=id)
 
     queryset = FarmExpense.objects.all()
 
     total_sum = queryset.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
-    context = {'expenses': queryset, 'total_sum': total_sum}
+    context = {'category': category, 'expenses': queryset, 'total_sum': total_sum}
     return render(request, 'farm_expense.html', context)
 
 
 @login_required
-def farm_income(request):
+def farm_income(request, id):
     """
     View function for user registration
 
@@ -181,23 +179,26 @@ def farm_income(request):
     Returns:
         HttpResponse object or redirect object
     """
-    if request.method == 'POST':
-        income_type = request.POST.get('income_type')
-        amount = request.POST.get('amount')
+    category = IncomeCategory.objects.get(id=id)
 
-        if income_type and amount:
-            income = FarmIncome.objects.create(user=request.user, income_type=income_type, amount=amount)
+    if request.method == 'POST':
+        income = request.POST.get('income')
+        amount = request.POST.get('amount')
+        user_date = request.POST.get('user_date')
+
+        if income and amount and user_date:
+            income = FarmIncome.objects.create(user=request.user, category=category, income=income, amount=amount, user_date=user_date)
             messages.success(request, 'Farm income added successfully')
-            return redirect('farm_income')
+            return redirect('farm_income', id=id)
         else:
             messages.error(request, 'Fill in the information')
-            return redirect('farm_income')
+            return redirect('farm_income', id=id)
 
     queryset = FarmIncome.objects.all()
 
     total_sum = queryset.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
-    context = {'items': queryset, 'total_sum': total_sum}
+    context = {'category': category, 'incomes': queryset, 'total_sum': total_sum}
     return render(request, 'farm_income.html', context)
 
 

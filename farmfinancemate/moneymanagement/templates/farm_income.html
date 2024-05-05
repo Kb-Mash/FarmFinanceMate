@@ -11,38 +11,42 @@
 {% endif %}
 
 {% block content %}
-<h1>Add Farm Income</h1>
+<h1>Add Farm Income: {{ category }}</h1>
 <form method="post">
     {% csrf_token %}
     <div class="mb-3">
-        <label for="income_type" class="form-label">Income Type:</label>
-        <input type="text" class="form-control" id="income_type" name="income_type" required>
+        <label for="income" class="form-label">Income:</label>
+        <input type="text" class="form-control" id="income" name="income" required>
     </div>
     <div class="mb-3">
         <label for="amount" class="form-label">Amount:</label>
         <input type="number" class="form-control" id="amount" name="amount" min="0" step="0.01" required>
+    </div>
+    <div class="mb-3">
+        <label for="user_date" class="form-label">Date Of Income:</label>
+        <input type="date" class="form-control" id="user_date" name="user_date" min="0" step="0.01" required>
     </div>
     <button type="submit" class="btn btn-primary">Add Income</button>
 </form>
 
 <hr>
 
-{% if items %}
+{% if incomes %}
 <h1>Farm Income</h1>
 <table class="table">
     <thead>
         <tr>
             <th>Date</th>
-            <th>Income Type</th>
+            <th>Income</th>
             <th>Amount</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        {% for income in items %}
+        {% for income in incomes %}
         <tr>
-            <td>{{ income.date }}</td>
-            <td>{{ income.income_type }}</td>
+            <td>{{ income.creation_date }}</td>
+            <td>{{ income.income }}</td>
             <td>R {{ income.amount }}</td>
             <td>
                 <a href="/update_income/{{ income.id }}" class="btn btn-primary btn-sm">Edit</a>

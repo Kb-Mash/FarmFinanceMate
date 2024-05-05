@@ -8,34 +8,52 @@ class ExpenseCategory(models.Model):
     def __str__(self):
         return f"{self.category}"
 
+    @classmethod
+    def create_predefined_categories(cls):
+        categories = ['Seed', 'Seedlings', 'Fertilizers', 'Pesticides', 'Labour', 'Vet', 'Machinery', 'Others']
+        cls.objects.bulk_create([cls(category=category) for category in categories])
+
+#ExpenseCategory.create_predefined_categories()
+
 class IncomeCategory(models.Model):
     category = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.category}"
+    
+    @classmethod
+    def create_predefined_categories(cls):
+        categories = ['Crop Sale', 'Livestock Sale', 'Debtors', 'Government subsidies', 'Others']
+        cls.objects.bulk_create([cls(category=category) for category in categories])
+
+#ncomeCategory.create_predefined_categories()
 
 class FarmExpense(models.Model):
     """
     Model class for farm expenses
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    expense_type = models.CharField(max_length=255)
+    category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE, default=None)
+    expense = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateField(auto_now_add=True)
+    user_date = models.DateField(default=None)
+    creation_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         """ string representation of the model instance """
-        return f"{self.expense_type} - {self.amount} - {self.date}"
+        return f"{self.expense} - {self.amount} - {self.creation_date}"
 
 class FarmIncome(models.Model):
     """
     Model class for farm income
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    income_type = models.CharField(max_length=255)
+    category = models.ForeignKey(IncomeCategory, on_delete=models.CASCADE, default=None)
+    income = models.CharField(max_length=255)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    date = models.DateField(auto_now_add=True)
+    user_date = models.DateField(default=None)
+    creation_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         """ string representation of the model instance """
-        return f"{self.income_type} - {self.amount} - {self.date}"
+        return f"{self.income} - {self.amount} - {self.creation_date}"

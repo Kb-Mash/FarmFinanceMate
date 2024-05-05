@@ -1,24 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Add Expense Category</h1>
-<form method="post">
-    {% csrf_token %}
-    <div class="mb-3">
-        <label for="expense_category" class="form-label">Expense Category:</label>
-        <input type="text" class="form-control" id="expense_category" name="expense_category" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Category</button>
-</form>
-
-<hr>
-
-{% if categories %}
 <h1>Expense Categories</h1>
-{% for category in categories %}
-<ul>
-    <li><a href="farm_expense">{{ category }}</a></li>
-</ul>
-{% endfor %}
-{% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Select Category</h2>
+            <ul>
+                {% for category in categories %}
+                    <li><a href="farm_expense/{{ category.id }}">{{ category }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 {% endblock %}
