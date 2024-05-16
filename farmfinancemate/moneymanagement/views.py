@@ -120,7 +120,7 @@ def expense_category(request):
 
     queryset = ExpenseCategory.objects.all() #.order_by('category')
     context = {'categories': queryset}
-    
+
     return render(request, 'expense_category.html', context)
 
 
@@ -131,7 +131,7 @@ def income_category(request):
 
     queryset = IncomeCategory.objects.all() #.order_by('category')
     context = {'categories': queryset}
-    
+
     return render(request, 'income_category.html', context)
 
 @login_required
@@ -216,18 +216,18 @@ def update_expense(request, id):
     expense = FarmExpense.objects.get(id=id)
 
     if request.method == 'POST':
-        expense_type = request.POST.get('expense_type')
-        amount = request.POST.get('amount')
+        update_expense = request.POST.get('expense')
+        update_amount = request.POST.get('amount')
 
-        if expense_type and amount:
-            expense.expense_type = expense_type
-            expense.amount = amount
+        if update_expense and update_amount:
+            expense.expense = update_expense
+            expense.amount = update_amount
             expense.save()
             messages.success(request, 'Farm expense updated successfully')
-            return redirect('farm_expense')
+            return redirect('farm_expense', id=id)
         else:
             messages.error(request, 'Fill in the information')
-            return redirect('update_expense')
+            return redirect('update_expense', id=id)
 
     context = {'expense': expense}
     return render(request, 'update_expense.html', context)
@@ -247,18 +247,18 @@ def update_income(request, id):
     income = FarmIncome.objects.get(id=id)
 
     if request.method == 'POST':
-        income_type = request.POST.get('income_type')
-        amount = request.POST.get('amount')
+        update_income = request.POST.get('income')
+        update_amount = request.POST.get('amount')
 
-        if income_type and amount:
-            income.income_type = income_type
-            income.amount = amount
+        if update_income and update_amount:
+            income.income = update_income
+            income.amount = update_amount
             income.save()
             messages.success(request, 'Farm income updated successfully')
-            return redirect('farm_income')
+            return redirect('farm_income', id=id)
         else:
             messages.error(request, 'Fill in the information')
-            return redirect('update_income')
+            return redirect('update_income', id=id)
 
     context = {'income': income}
     return render(request, 'update_income.html', context)
@@ -278,7 +278,7 @@ def delete_expense(request, id):
     queryset = FarmExpense.objects.get(id=id)
     queryset.delete()
     messages.success(request, 'Expense deleted successfully.')
-    return redirect('farm_expense')
+    return redirect('farm_expense', id=id)
 
 
 @login_required
@@ -295,4 +295,4 @@ def delete_income(request, id):
     queryset = FarmIncome.objects.get(id=id)
     queryset.delete()
     messages.success(request, 'Income deleted successfully.')
-    return redirect('farm_income')
+    return redirect('farm_income', id=id)

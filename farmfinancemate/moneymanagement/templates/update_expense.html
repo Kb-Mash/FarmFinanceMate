@@ -15,8 +15,8 @@
 <form method="post">
     {% csrf_token %}
     <div class="mb-3">
-        <label for="expense_type" class="form-label">Expense Type:</label>
-        <input type="text" class="form-control" id="expense_type" name="expense_type" value="{{ expense.expense_type }}" required>
+        <label for="expense" class="form-label">Expense Type:</label>
+        <input type="text" class="form-control" id="expense" name="expense" value="{{ expense.expense }}" required>
     </div>
     <div class="mb-3">
         <label for="amount" class="form-label">Amount:</label>
